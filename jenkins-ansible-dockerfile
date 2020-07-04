@@ -1,0 +1,9 @@
+FROM jenkins/jenkins
+
+USER root
+
+RUN curl -O https://bootstrap.pypa.io/get-pip.py && \
+    python get-pip.py && \
+    pip install ansible paramiko --upgrade  ## Paramiko is a package that is needed when we are trying to connect to a host with password in Ansible inventory or else it will error out
+
+USER jenkins
