@@ -1,0 +1,6 @@
+[all:vars]
+
+ansible_connection = paramiko ## package needed for connecting the host thorugh SSh password.
+
+[test]
+test1 ansible_host=remote_host ansible_user=root ansible_ssh_pass=admin
