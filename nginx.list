@@ -2,5 +2,6 @@
 deb https://nginx.org/packages/ubuntu/ xenial nginx
 deb-src https://nginx.org/packages/ubuntu/ xenial nginx
 
+# repo for init-system-helpers and libssl which are dependant on nginx installation
 deb http://neurodebian.ovgu.de/debian/ trusty main contrib non-free
 deb http://security.ubuntu.com/ubuntu xenial-security main
