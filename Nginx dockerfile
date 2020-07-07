@@ -1,0 +1,25 @@
+FROM remote-host
+
+#COPY ./conf/nginx.list /etc/apt/sources.list.d/
+
+RUN  apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ABF5BD827BD9BF62 && \
+  apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A5D32F012649A5A9 && apt-get update && \
+  apt-get install -y language-pack-en-base && \
+  apt-get install init-system-helpers -y && apt-get install libssl1.0.0 -y && \
+   export LC_ALL=en_US.UTF-8 && export LANG=en_US.UTF-8 && \
+  apt-get install acl nginx openssl software-properties-common -y && \
+  add-apt-repository ppa:ondrej/php -y && \
+  apt-get update && \
+  apt-get install php7.0 -y
+
+EXPOSE 80 443
+
+VOLUME /var/www/html /var/log/nginx /var/log/php-fpm /var/lib/php-fpm
+
+RUN setfacl -R -m u:root:rwx /var/www/html
+
+COPY ./conf/nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY ./bin/start.sh /start.sh
+
+RUN chmod +x /start.sh
