@@ -20,6 +20,8 @@ RUN setfacl -R -m u:root:rwx /var/www/html
 
 COPY ./conf/nginx.conf /etc/nginx/conf.d/default.conf
 
+RUN mkdir -p /run/php
+
 COPY ./bin/start.sh /start.sh
 
 RUN chmod +x /start.sh
