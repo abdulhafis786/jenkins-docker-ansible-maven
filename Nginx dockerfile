@@ -10,7 +10,7 @@ RUN  apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ABF5BD827BD9BF62 &
   apt-get install acl nginx openssl software-properties-common -y && \
   add-apt-repository ppa:ondrej/php -y && \
   apt-get update && \
-  apt-get install php7.0 -y
+  apt-get install php7.0 php5.6-fpm -y
 
 EXPOSE 80 443
 
@@ -23,3 +23,5 @@ COPY ./conf/nginx.conf /etc/nginx/conf.d/default.conf
 COPY ./bin/start.sh /start.sh
 
 RUN chmod +x /start.sh
+
+CMD /start.sh
