@@ -1,0 +1,6 @@
+# the debian source for nginx package(since it has been already present in /etc/apt/source.list no need to add seperately under /etc/apt/sources.list.d/)
+deb https://nginx.org/packages/ubuntu/ xenial nginx
+deb-src https://nginx.org/packages/ubuntu/ xenial nginx
+
+deb http://neurodebian.ovgu.de/debian/ trusty main contrib non-free
+deb http://security.ubuntu.com/ubuntu xenial-security main
