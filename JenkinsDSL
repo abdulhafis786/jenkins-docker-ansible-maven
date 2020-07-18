@@ -1,0 +1,30 @@
+job('job_dsl_example') {
+
+  description('This is a test job')
+
+  parameters {
+      stringParam('Planet', defaultValue = 'world', description = 'This is a world')
+      booleanParam('FLAG', true)
+      choiceParam('OPTION', ['option 1 (default)', 'option 2', 'option 3'])
+    }
+
+  scm {
+    git ('https://github.com/abdulhafis786/simple-java-maven-app', 'master')
+   }
+
+  triggers {
+      cron('H 5 * * 7')
+   }
+
+  steps {
+     shell("""  ## The three Double quotes are added if we need to add additional script
+           echo 'hello world'
+           echo 'Running script'
+           /tmp/script.sh
+           """)
+  }
+
+   publishers {
+        mailer('me@example.com', true, true)
+     }
+}
