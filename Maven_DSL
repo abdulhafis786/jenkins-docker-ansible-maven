@@ -1,0 +1,29 @@
+job('maven_dsl') {
+
+  description('Maven DSL project')
+
+  scm {
+    git ('https://github.com/abdulhafis786/simple-java-maven-app', 'master', {node -> node / 'extensions' << '' }) ###### the additional value given after master is to preven th                                                                                                                          e tag getting created by default which we dont need
+   }
+
+  steps {
+     maven {
+        mavenInstallation('jenkins-maven')
+        goals('-B -DskipTests clean package')
+     }
+      maven {
+        mavenInstallation('jenkins-maven')
+        goals('test')
+     }
+     shell('''
+           echo ****************************RUNNING THE JAR**********************************
+           java -jar /var/jenkins_home/workspace/maven_dsl/target/my-app-1.0-SNAPSHOT.jar
+           ''')
+  }
+
+   publishers {
+        archiveArtifacts('target/*.jar')
+        archiveJunit('target/surefire-reports/*.xml')
+        mailer('abdulhafis786@gmail.com', true, true)
+     }
+}
