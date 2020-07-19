@@ -1,0 +1,138 @@
+#Sample pipeline Syntax
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building ..'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing ...'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying ...'
+            }
+        }
+    }
+}
+
+## Multiple steps
+
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+               sh 'echo "Building my first pipeline.."'
+               sh '''      ## Here the three quotes are given to have multiple shell command to be executed
+                  echo "By the way, I can do more stuff in here"
+                  ls -lah
+                '''
+            }
+        }
+     }
+ }
+
+##### Retry template
+
+pipeline {
+    agent any
+    stages {
+        stage('Timeout') {
+            steps {
+               retry(3){
+               sh 'I am not going to work :c'
+            }
+        }
+     }
+  }
+}
+
+### Timeout template
+
+pipeline {
+    agent any
+    stages {
+        stage('Deploy') {
+            steps {
+               retry(3){
+               sh 'echo Hello'
+            }
+
+            timeout(time: 3, unit: 'SECONDS') {
+             sh 'sleep 5'
+            }
+         }
+      }
+   }
+}
+
+### Environment template
+
+pipeline {
+    agent any
+
+    environment {
+       NAME = 'Abdul'
+       LASTNAME = 'Hafis'
+     }
+
+    stages {
+        stage('Build') {
+            steps {
+               sh 'echo $NAME $LASTNAME'
+            }
+        }
+     }
+ }
+
+#### Credential template
+
+pipeline {
+    agent any
+
+    environment {
+       secret = credentials('TEST') #here the Seccret text called TEST must be added in credentials section in jenkins
+     }
+
+    stages {
+        stage('Example stage 1') {
+            steps {
+               sh 'echo $secret'
+            }
+        }
+     }
+ }
+
+### Post action template
+
+pipeline {
+  agent any
+  stages {
+     stage('Test') {
+       steps {
+         sh 'echo "Fail"; exit 1'
+       }
+     }
+   }
+   post {
+     always {
+        echo 'I will always get executed :D'
+     }
+     success {
+        echo 'I will get executed only if this is success'
+     }
+     failure {
+        echo 'I will get executed only if this fails'
+     }
+     unstable {
+        echo 'I will get executed only if it is unstable'
+     }
+  }
+}
